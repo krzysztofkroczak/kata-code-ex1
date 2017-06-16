@@ -7,20 +7,21 @@ namespace kata1
     [TestFixture]
     public class PrimeNumbersGeneratorTests
     {
-        [Test]
-        public void Generate_ReturnsEmptyCollection_ForThresholdZero()
+        [TestCase(0)]
+        [TestCase(1)]
+        public void Generate_ReturnsEmptyCollection_ForThresholdZero(int input)
         {
             var generator = new PrimeNumbersGenerator();
 
-            var primeNumbers = generator.Generate(0);
+            var primeNumbers = generator.Generate(input);
 
             CollectionAssert.AreEquivalent(new int[0], primeNumbers);
         }
 
 
-        [TestCase(1, new[] {1})]
-        [TestCase(2, new[] {1, 2})]
-        [TestCase(3, new[] {1, 2, 3})]
+        
+        [TestCase(2, new[] {2})]
+        [TestCase(3, new[] {2, 3})]
         public void Generate_ReturnsElementsOfSequenceAsInputNumber(int input, int[] expected)
         {
             var generator = new PrimeNumbersGenerator();
@@ -30,9 +31,9 @@ namespace kata1
             CollectionAssert.AreEquivalent(expected, primeNumbers);
         }
 
-        [TestCase(4, new[] { 1, 2, 3 })]
-        [TestCase(15, new[] { 1, 2, 3, 5, 7, 11, 13 })]
-        [TestCase(100, new[] {1,2,3,5,7,11,
+        [TestCase(4, new[] { 2, 3 })]
+        [TestCase(15, new[] { 2, 3, 5, 7, 11, 13 })]
+        [TestCase(100, new[] {2,3,5,7,11,
             13,17,19,23,29,
             31,37,41,43,47,
             53,59,61,67,71,
@@ -55,6 +56,8 @@ namespace kata1
             {
                 foreach (var number in Enumerable.Range(1, analyzeNumbersThreshold))
                 {
+                    if(number==1)
+                        continue;
                     var nis = Enumerable.Range(1, number-1);
                     var isPrime = true;
                     foreach (var ni in nis)
@@ -69,7 +72,6 @@ namespace kata1
                         yield return number;
                 }
             }
-            yield break;
         }
     }
 }
